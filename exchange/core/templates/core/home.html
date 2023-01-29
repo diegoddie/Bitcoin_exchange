@@ -1,0 +1,116 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+{% if request.user.is_authenticated %}
+    <div class="container px-5 py-4 my-6">
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-7 col-sm-7 mb-3">
+                    <div class="card rounded-corners bg-white text-black ">
+                        <div class="card-body balance-details">
+                            <h5 class="card-title text-uppercase">Balance Details</h5>
+                            <p class="card-text">BTC: {{ wallet.btc_balance }}</p>
+                            <p class="card-text">USD available: ${{ wallet.usd_balance }}</p>
+                            <div class="d-flex flex-row mt-4">
+                                <a href="{% url 'create_order' %}" class="btn btn-success mx-2">TRADE NOW</a>
+                                <a href="" class="btn btn-light mx-2">DEPOSIT</a>
+                                <a href="" class="btn btn-light mx-2">WITHDRAW</a>
+                                <a href="{% url 'active_orders' %}" class="btn btn-light mx-2">ACTIVE ORDERS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-2">
+                    <div class="card rounded mb-3">
+                        <div class="card-body" style="max-height: 110px;">
+                            <div class="d-flex flex-row align-items-center">
+                                <div>
+                                    <h5 class="card-title-btcusd">BTC/USD 
+                                        {% if btc_usd_change >= 0 %}                                
+                                            <span class="text-success positive-change">{{ btc_usd_change }}%</span>
+                                        {% else %}
+                                            <span class="text-danger negative-change">{{ btc_usd_change }}%</span>
+                                        {% endif %}
+                                    </h5>
+                                    <p class="price"> {{btc_usd_price}} $</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded mt-1 mb-2">
+                        <div class="card-body" style="max-height: 100px;">
+                            <div class="d-flex flex-row align-items-center">
+                                <div>
+                                    <h5 class="pnl">PNL</h5>
+                                    <p class="profit-loss">
+                                        {% if profit_loss >= 0 %}
+                                          <span class="text-success">Profit: {{ profit_loss }} $</span>
+                                        {% else %}
+                                          <span class="text-danger">Loss: {{ profit_loss }} $</span>
+                                        {% endif %}
+                                    </p>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>          
+                <div class="col-md-10 col-sm-7 mb-3">  
+                    <div class="card rounded-corners">
+                        <div class="card-header d-flex justify-content-between text-white">
+                            <h5 class="text-uppercase header">LAST TRANSACTIONS</h5>
+                            <a href="{% url 'transactions' %}" class="font-10 weight-600">VIEW ALL</a>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless home">
+                                <tbody>
+                                    {% for transaction in last_transactions %}
+                                    <tr class="home">
+                                        <td>
+                                            <div class="d-flex flex-row">
+                                                <div class="d-flex flex-column ps-2 bought-sold">
+                                                    {% if transaction.buyer.id == user.id %}
+                                                        <span class="font-14 weight-700 purple-color-2">Bought BTC</span>
+                                                    {% else %}
+                                                        <span class="font-14 weight-700 purple-color-2">Sold BTC</span>
+                                                    {% endif %}
+                                                    <span class="font-10 weight-400 purple-color-2">{{transaction.timestamp}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column align-items-end bought-sold">
+                                                {% if transaction.buyer.id == user.id %}
+                                                    <span class=" font-16 weight-700 orange-color ">+{{transaction.btc_amount}} BTC</span>
+                                                    <span class=" font-16 weight-700 orange-color ">-{{transaction.total_price}} $</span>
+                                                {% else %}
+                                                    <span class=" font-16 weight-700 orange-color ">-{{transaction.btc_amount}} BTC</span>
+                                                    <span class=" font-16 weight-700 orange-color ">+{{transaction.total_price}} $</span>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center mx-auto">
+                <h1 class="display-4 text-white"><i class="fas fa-rocket"></i> START<span class="two">2</span>TRADE</h1>
+                <p class=" display-4 my-3 text-white">SIGN UP TODAY TO RECEIVE 1 TO 10 TEST BITCOIN AND 100$ TEST DOLLARS. START TRADING ON OUR EXCHANGE. </p>
+                <a href="{% url 'login' %}" class="btn btn-outline-light">LOGIN</a>
+                <a href="{% url 'register' %}" class="btn me-2 btn-primary">REGISTER</a>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}

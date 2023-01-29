@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+  <div class="text-white">
+    <h1 class="text-center my-3">Active Orders</h1>
+    {% if object_list %}
+      <table class="table table-borderless active-orders">
+        <thead class="thead-light">
+          <tr class="transaction">
+            <th>Created</th>
+            <th>Type</th>
+            <th>BTC Amount</th>
+            <th>BTC Unit Price</th>
+            <th>Total Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in object_list %}
+            <tr>
+              <td>{{ order.created }}</td>
+              <td>{{ order.get_type_display }}</td>
+              <td>{{ order.btc_amount }}</td>
+              <td>{{ order.btc_unit_price }} $</td>
+              <td>{{ order.total_price }} $</td>
+              <td>
+                  <a href="{% url 'delete_order' order.pk %}" class="btn btn-danger">Delete Order</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}

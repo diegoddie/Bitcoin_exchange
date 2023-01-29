@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1>Profit and Loss</h1>
+
+<p class="font-18 weight-400">
+    {% if profit_loss >= 0 %}
+      <span class="text-success">Profit: {{ profit_loss }}</span>
+    {% else %}
+      <span class="text-danger">Loss: {{ profit_loss }} $</span>
+    {% endif %}
+</p>
+
+
+{% endblock content %}

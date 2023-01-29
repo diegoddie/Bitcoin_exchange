@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+  <div class="text-white">
+    <h1 class="text-center my-3">Transactions History</h1>
+    {% if object_list %}
+      <table class="table table-borderless transaction">
+        <thead>
+          <tr class="transaction">
+            <th>Date</th>
+            <th>Type</th>
+            <th>BTC Amount</th>
+            <th>BTC Unit Price</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in object_list %}
+          <tr>
+              <td>{{ transaction.timestamp }}</td>
+              <td>
+                {% if transaction.buyer.id == user.id %}
+                    Buy
+                {% else %}
+                    Sell
+                {% endif %}
+              </td>      
+              <td>{{ transaction.btc_amount }}</td>
+              <td>{{ transaction.btc_unit_price }} $</td>
+              <td>{{ transaction.total_price }} $</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}
