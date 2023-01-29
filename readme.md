@@ -27,7 +27,7 @@ For more details take a look to the Project Presentation :)
 4. Run the development server
 ```python manage.py runserver```
 
-5. Install MongoDB Compass
+5. Install MongoDB Compass <br>
 MongoDB Compass is a tool that allows you to visualize and manage the data stored in your MongoDB databases. It's highly recommended to use MongoDB Compass in order to have a better understanding of the data structure and to easily interact with the data.
 You can download it from the official website: 
 https://www.mongodb.com/products/compass
