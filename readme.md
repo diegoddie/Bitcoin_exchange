@@ -29,7 +29,6 @@ For more details take a look to the Project Presentation :)
 
 5. Install MongoDB Compass
 MongoDB Compass is a tool that allows you to visualize and manage the data stored in your MongoDB databases. It's highly recommended to use MongoDB Compass in order to have a better understanding of the data structure and to easily interact with the data.
-
 You can download it from the official website: 
 https://www.mongodb.com/products/compass
 
@@ -37,6 +36,14 @@ https://www.mongodb.com/products/compass
 - [Django](https://www.djangoproject.com/) - The web framework used
 - [MongoDB](https://www.mongodb.com/) - Database
 - [MongoDBCompass](https://www.mongodb.com/products/compass) - Tool for visualizing the MongoDB data
+
+## _🚀 Future Upgrades_
+I am already working on future updates and implementations. The goal is to continue to update this project as I expand my knowledge. Currently, the upgrades in the pipeline are: 
+* Better management of the CoinMarketCap API call
+* Token authentication
+* Endpoint management with Django Rest Framework 
+
+If you have any suggestions, please contact me! :)
 
 ## _🚀 Contacts_
 - Mail: diego.boost@gmail.com
