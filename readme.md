@@ -38,7 +38,8 @@ https://www.mongodb.com/products/compass
 - [MongoDBCompass](https://www.mongodb.com/products/compass) - Tool for visualizing the MongoDB data
 
 ## _🚀 Future Upgrades_
-I am already working on future updates and implementations. The goal is to continue to update this project as I expand my knowledge. Currently, the upgrades in the pipeline are: 
+I am already working on future updates and implementations. The goal is to continue to update this project as I expand my knowledge. Currently, the upgrades in the pipeline are:
+* Improve responsiveness for mobile devices
 * Better management of the CoinMarketCap API call
 * Token authentication
 * Endpoint management with Django Rest Framework 
