@@ -28,9 +28,9 @@
                     Sell
                 {% endif %}
               </td>      
-              <td>{{ transaction.btc_amount }}</td>
+              <td>{{ transaction.btc_amount|floatformat:5 }}</td>
               <td>{{ transaction.btc_unit_price }} $</td>
-              <td>{{ transaction.total_price }} $</td>
+              <td>{{ transaction.total_price|floatformat:2 }} $</td>
           </tr>
           {% endfor %}
         </tbody>

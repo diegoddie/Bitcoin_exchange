@@ -7,7 +7,7 @@ from .forms import OrderCreateForm
 from bson import ObjectId
 from .models import Order, Wallet, Transaction
 from django.http import Http404
-from django.http import request
+from django.contrib.auth.mixins import LoginRequiredMixin
 from mongoengine import ObjectIdField
 from django.contrib.auth.models import User
 from .utils import get_btc_data
@@ -55,12 +55,10 @@ def home(request):
     return render(request, "core/home.html", context)
 
 def match_orders(order):
-    open_orders = Order.objects.filter(status='open').exclude(author=order.author)
     match = False
+    open_orders = Order.objects.filter(status='open').order_by('btc_unit_price').exclude(author=order.author)
     for open_order in open_orders:
         if open_order.type != order.type and open_order.btc_unit_price >= order.btc_unit_price:
-            match = True
-            # create transaction
             transaction_amount = min(order.btc_amount, open_order.btc_amount)
             transaction = Transaction.objects.create(
                 buyer=order.author,
@@ -85,11 +83,15 @@ def match_orders(order):
                 open_order.status = 'closed'
             order.save()
             open_order.save()
+            match = True
+
+            # check if there's still room for matching
+            if order.btc_amount > 0:
+                match_orders(order)
             break
     return match
 
-
-class CreateOrderView(CreateView):
+class CreateOrderView(LoginRequiredMixin, CreateView):
     model = Order
     template_name = 'core/create_order.html'
     success_url = '.'
@@ -110,7 +112,7 @@ class CreateOrderView(CreateView):
         kwargs.update({'user': self.request.user})
         return kwargs
 
-class ActiveOrdersView(ListView):
+class ActiveOrdersView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'core/active_orders.html'
 
@@ -120,7 +122,8 @@ class ActiveOrdersView(ListView):
             queryset = queryset.filter(author=self.request.user)
         return queryset
 
-class OrderDeleteView(DeleteView):
+
+class OrderDeleteView(LoginRequiredMixin, DeleteView):
     model = Order
     template_name = 'core/delete_order.html'
     success_url = reverse_lazy('active_orders')
@@ -132,7 +135,7 @@ class OrderDeleteView(DeleteView):
             raise Http404("No Order found matching the query")
 
 
-class TransactionsListView(ListView):
+class TransactionsListView(LoginRequiredMixin, ListView):
     model = Transaction
     template_name = 'core/transactions.html'
 
@@ -140,7 +143,7 @@ class TransactionsListView(ListView):
         queryset = Transaction.objects.filter(Q(buyer=self.request.user) | Q(seller=self.request.user)).order_by('-timestamp')
         return queryset
 
-class ProfitAndLossView(View):
+class ProfitAndLossView(LoginRequiredMixin, View):
     template_name = 'core/profit_and_loss.html'
 
     def get(self, request, *args, **kwargs):

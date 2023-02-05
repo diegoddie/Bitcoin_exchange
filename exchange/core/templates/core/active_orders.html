@@ -23,9 +23,9 @@
             <tr>
               <td>{{ order.created }}</td>
               <td>{{ order.get_type_display }}</td>
-              <td>{{ order.btc_amount }}</td>
+              <td>{{ order.btc_amount|floatformat:5 }}</td>
               <td>{{ order.btc_unit_price }} $</td>
-              <td>{{ order.total_price }} $</td>
+              <td>{{ order.total_price|floatformat:2 }} $</td>
               <td>
                   <a href="{% url 'delete_order' order.pk %}" class="btn btn-danger">Delete Order</a>
               </td>
